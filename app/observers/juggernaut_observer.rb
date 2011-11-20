@@ -1,6 +1,6 @@
-module SpineJuggernautRails
-  module Observer
-      
+class JuggernautObserver < ActiveRecord::Observer
+    observe SpineJuggernautRails.config.register
+
     def after_create(rec)
       publish(:create, rec)
     end
@@ -27,5 +27,4 @@ module SpineJuggernautRails
           :except => rec.session_id
         )
       end
-  end
 end
