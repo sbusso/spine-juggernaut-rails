@@ -11,3 +11,6 @@ attr_accessor :session_id
 
 add session_id to controller (protected method)
 	@page.session_id = session_id (create, update, destroy)
+
+
+create an observer for the model and include SpineJuggernautRails::Observer
