@@ -1,0 +1,13 @@
+gem 'juggernaut'
+include juggernaut_assets_tags in template
+require juggernaut in application.js
+
+config/application.rb => 
+	config.active_record.observers = :juggernaut_observer 
+
+
+model.rb
+attr_accessor :session_id 
+
+add session_id to controller (protected method)
+	@page.session_id = session_id (create, update, destroy)
