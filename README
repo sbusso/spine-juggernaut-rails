@@ -2,34 +2,28 @@ based on Alex MacCaw (author of Juggernaut and Spine) demo spine.rails3
 
 === installation
 
-gem 'juggernaut'
-include juggernaut_assets_tags in layout
-require juggernaut_handler in application.js
+gem 'spine-juggernaut-rails'
+include juggernaut_assets_tags in your layout
+require juggernaut_handler in your application.js
 
 
-Add an initializer juggernaut.rb with 
+Add an initializer juggernaut.rb to configure observed models
 
-SpineJuggernautRails.config.register = :page
+SpineJuggernautRails.config do |juggernaut|
+	juggernaut.observe = :page
+	juggernaut.channel = '/observer'
+	# TODO: host, port, realtime
+end
 
 === session_id
 
 Add to the model
 attr_accessor :session_id 
 
-add session_id to controller (protected method)
-	@page.session_id = session_id (create, update, destroy)
+add session_id to controller (protected method) // hook on controller (create, update, destroy) => include module "juggernaut_controller" 
+	@(Model).session_id = session_id 
 
 TODO: make a module
 
-=== observers
-
-create an observer for the model and include SpineJuggernautRails::Observer
-config/application.rb => 
-	config.active_record.observers = :model_observer 
-
-
-TODO: define channels
-
-TODO: include in model and create observer 
-TODO: include in model session id, keeping only installation step.
+TODO: include in model session id and for controller ?, keeping only installation step.
 

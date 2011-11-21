@@ -1,5 +1,5 @@
 class JuggernautObserver < ActiveRecord::Observer
-    observe SpineJuggernautRails.config.register
+    observe SpineJuggernautRails.config.observe
 
     def after_create(rec)
       publish(:create, rec)
@@ -15,9 +15,8 @@ class JuggernautObserver < ActiveRecord::Observer
     
     protected
       def publish(type, rec)
-        # p "observer publish on juggernaut"
         Juggernaut.publish(
-          "/observer", #TODO: channel parameter
+          SpineJuggernautRails.config.channel, 
           { 
             type:   type, 
             id:     rec.id, 
