@@ -18,7 +18,6 @@ end
 === session_id
 
 Add to the model
-attr_accessor :session_id 
 
 add session_id to controller (protected method) // hook on controller (create, update, destroy) => include module "juggernaut_controller" 
 	@(Model).session_id = session_id 
