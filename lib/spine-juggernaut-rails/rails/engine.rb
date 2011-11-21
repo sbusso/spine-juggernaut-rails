@@ -2,19 +2,23 @@ module SpineJuggernautRails
   begin
     class Engine < ::Rails::Engine
 
-    	initializer :load_config_initializers do |app| 
-    		observers = app.config.active_record.observers || []
-    		app.config.active_record.observers = observers.is_a?(Array) ? observers << :juggernaut_observer : [observers, :juggernaut_observer]
-    		#SpineJuggernautRails.config.channel ||= '/observer' TODO: default value to channel
+    	observers = config.active_record.observers || []
+    	config.active_record.observers = observers.is_a?(Array) ? observers << :juggernaut_observer : [observers, :juggernaut_observer]
+    	config.after_initialize do |app|
+    		SpineJuggernautRails.config do |juggernaut|
+	    		observee = juggernaut.observe.is_a?(Array) ? juggernaut.observe : [juggernaut.observe]
+					observee.each do |model_symbol|
+						model = model_symbol.to_s.split("_").collect(&:capitalize).join.constantize
+						#model.attr_accessor :session_id 
+					end
+
+					juggernaut.channel ||= '/observer' 
+					juggernaut.host ||= 'localhost'
+					juggernaut.port ||= 'port' 
+				end
     	end
 
     end
   rescue NameError
-  end
-
-  def self.config(&block)
-    @@config ||= SpineJuggernautRails::Engine::Configuration.new
-    yield @@config if block
-    return @@config
   end
 end
